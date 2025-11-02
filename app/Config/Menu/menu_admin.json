@@ -5,6 +5,12 @@
     "icon": "<i class=\"nav-icon fa-solid fa-house\"></i>",
     "class": "main-menu-accueil"
   },
+  "program": {
+    "title": "Programme",
+    "url": "/admin/program",
+    "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>",
+    "class": "bg-red"
+  },
   "administration": {
     "title": "Administration",
     "url": "/",

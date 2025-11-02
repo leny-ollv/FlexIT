@@ -3,7 +3,7 @@ services:
     image: mariadb:latest
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE:  #NOM DE LA BASE DE DONNEES A SAISIR
+      MYSQL_DATABASE: flexit
       MYSQL_USER: root
       MYSQL_PASSWORD: admin
     ports:
