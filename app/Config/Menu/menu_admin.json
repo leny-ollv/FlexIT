@@ -11,6 +11,24 @@
     "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>",
     "class": "bg-red"
   },
+  "program": {
+    "title": "Programme",
+    "url": "/admin/program",
+    "icon": "<i class=\"nav-icon fa-solid fa-dumbbell\"></i>",
+    "class": ""
+  },
+  "exercise": {
+    "title": "Exercices",
+    "url": "/admin/exercise",
+    "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>",
+    "class": ""
+  },
+  "category": {
+    "title": "Catégories",
+    "url": "/admin/category",
+    "icon": "<i class=\"nav-icon fas fa-layer-group\"></i>",
+    "class": ""
+  },
   "administration": {
     "title": "Administration",
     "url": "/",
