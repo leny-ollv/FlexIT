@@ -38,15 +38,19 @@ class CategoryModel extends Model
     {
         return $this->orderBy('name', 'ASC')->findAll();
     }
+
     public function getCategory(int $id): ?array
     {
         return $this->where('id', $id)->first();
     }
+
     protected function getDataTableConfig(): array
     {
         return [
-            'searchable_fields' => ['categories.id', 'categories.name'],
-            'select' => 'categories.id, categories.name',
+            'searchable_fields' => ['id', 'name'], // Champs par défaut
+            'joins' => [],
+            'select' => '*',
+            'with_deleted' => false, // Inclure les enregistrements soft deleted
         ];
     }
 }

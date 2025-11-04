@@ -43,15 +43,33 @@ class ExerciseModel extends Model
     protected function getDataTableConfig(): array
     {
         return [
-            'searchable_fields' => ['exercices.id', 'exercices.name', 'categories.name'],
+            'searchable_fields' => [
+                'exercices.id',
+                'exercices.name',
+                'categories.name',
+                'exercices.description',
+                'exercices.reps',
+                'exercices.nber_series',
+                'exercices.rest_time'
+            ],
             'joins' => [
                 [
                     'table' => 'categories',
                     'condition' => 'exercices.id_cat = categories.id',
                     'type' => 'left'
+                ],
+                [
+                    'table' => 'exercise_muscle',
+                    'condition' => 'exercices.id = exercise_muscle.id_exercice',
+                    'type' => 'left'
+                ],
+                [
+                    'table' => 'muscles',
+                    'condition' => 'exercise_muscle.id_muscle = muscles.id',
+                    'type' => 'left'
                 ]
             ],
-            'select' => 'exercices.id, exercices.name, categories.name as category_name, exercices.id_cat',
+            'select' => 'exercices.id, exercices.name, categories.name as category_name, muscles.name as muscle_name, exercices.description, exercices.reps, exercices.nber_series, exercices.rest_time, exercices.id_cat',
         ];
     }
 }

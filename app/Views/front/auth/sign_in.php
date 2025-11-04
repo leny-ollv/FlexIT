@@ -22,9 +22,9 @@
                     <?= form_open('auth/login') ?>
                         <!--<input type="hidden" name="--><?php //= csrf_token_name(); ?><!--" value="--><?php //= csrf_hash(); ?><!--">-->
                         <div class="card-body">
-                            <div class="row flex-column align-content-center">
+                            <div class="row flex-column align-content-center mb-3">
                                 <div class="col-6">
-                                    <img src="<?= base_url('assets/img/logo-full.png') ?>" alt="Votre Logo" class="w-100">
+                                    <img src="<?= base_url('assets/img/Logo_FlexIT_cote.jpg') ?>" alt="Votre Logo" class="w-100 rounded-3">
                                 </div>
                             </div>
                             <div class="form-floating mb-3">

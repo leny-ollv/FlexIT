@@ -33,8 +33,10 @@ class CategoriesPrgmModel extends Model
     protected function getDataTableConfig(): array
     {
         return [
-            'searchable_fields' => ['categories_prgm.id', 'categories_prgm.name'],
-            'select' => 'categories_prgm.id, categories_prgm.name',
+            'searchable_fields' => ['id', 'name'], // Champs par défaut
+            'joins' => [],
+            'select' => '*',
+            'with_deleted' => false, // Inclure les enregistrements soft deleted
         ];
     }
 }

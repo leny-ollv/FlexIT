@@ -44,7 +44,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->post('delete', 'Category::delete');
     });
 
-    $routes->group('categories-prgm', function ($routes) {
+    $routes->group('categories_prgm', function ($routes) {
         $routes->get('/', 'CategoriesPrgm::index');
         $routes->get('new', 'CategoriesPrgm::create');
         $routes->get('(:num)', 'CategoriesPrgm::edit/$1');
@@ -58,32 +58,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->get('(:num)', 'Muscle::edit/$1');
         $routes->post('save', 'Muscle::save');
         $routes->post('delete', 'Muscle::delete');
-    });
-
-// Routes pour les tables d'associations
-    $routes->group('workout', function ($routes) {
-        $routes->post('store', 'Workout::store');
-        $routes->post('delete', 'Workout::delete');
-    });
-
-    $routes->group('series', function ($routes) {
-        $routes->post('store', 'Series::store');
-        $routes->post('delete', 'Series::delete');
-    });
-
-    $routes->group('friend', function ($routes) {
-        $routes->post('store', 'Friend::store');
-        $routes->post('delete', 'Friend::delete');
-    });
-
-    $routes->group('friendrequest', function ($routes) {
-        $routes->post('store', 'FriendRequest::store');
-        $routes->post('delete', 'FriendRequest::delete');
-    });
-
-    $routes->group('exercise-muscle', function ($routes) {
-        $routes->post('store', 'ExerciseMuscle::store');
-        $routes->post('delete', 'ExerciseMuscle::delete');
     });
 });
 

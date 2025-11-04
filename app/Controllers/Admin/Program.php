@@ -19,11 +19,34 @@ class Program extends BaseController
         return $this->view('/admin/program/form');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         helper('form');
-        $pm = Model('ProgramModel');
+
+        $pm = model('ProgramModel');
+        $em = model('ExerciseModel');
+        $wm = model('WorkoutModel');
+        $sm = model('SeriesModel');
+
+        // Récupérer le programme avec le nom du créateur
         $program = $pm->getProgram($id);
-        return $this->view('/admin/program/form', ['program'=>$program]);
+
+        // Tous les exercices pour les selects
+        $exercises = $em->getAllWithCategory();
+
+        // Les workouts associés au programme
+        $workouts = $wm->getExercisesByProgram($id);
+
+        // Pour chaque workout, récupérer ses séries
+        foreach ($workouts as &$workout) {
+            $workout['series'] = $sm->getByExercise($workout['id_exercice']);
+        }
+
+        return $this->view('/admin/program/form', [
+            'program' => $program,
+            'exercises' => $exercises,
+            'workouts' => $workouts
+        ]);
     }
 
     public function save() {
