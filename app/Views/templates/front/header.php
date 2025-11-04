@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img class="img-fluid" src="<?= base_url('assets/img/logo-32.png'); ?>" alt="logo"> Votre application
+            <img class="img-fluid rounded-3" src="<?= base_url('assets/img/logo_FlexIT.png'); ?>" alt="logo" style="width: 70px; height: auto;"> FlexIT
         </a>
         <div class="dropdown ms-auto me-3 d-lg-none">
             <?php user_menu(); ?>

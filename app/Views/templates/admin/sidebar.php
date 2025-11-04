@@ -1,7 +1,7 @@
 <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
     <div class="sidebar-header border-bottom">
         <div class="sidebar-brand">
-            <img src="<?= base_url("/assets/img/logo-32.png"); ?>"> Votre application
+            <img class="img-fluid rounded-2" style="width: 120px; height: auto;" src="<?= base_url("/assets/img/Logo_FlexIT_cote.jpg"); ?>">
         </div>
         <a href="<?= base_url(); ?>" target="_blank" class="header-toggler" alt="Voir le site" title="Voir le site"><i class="fa-solid fa-house-laptop"></i></a>
     </div>

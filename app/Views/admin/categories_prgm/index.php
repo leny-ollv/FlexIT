@@ -2,27 +2,22 @@
     <div class="col">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title">Liste des exercices</h3>
-                <a href="<?= base_url('/admin/exercise/new') ?>" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nouvel exercice
+                <h3 class="card-title">Liste des catégories de programmes</h3>
+                <a href="<?= base_url('/admin/categories_prgm/new') ?>" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouvelle catégorie
                 </a>
             </div>
             <div class="card-body">
-                <table id="exercisesTable" class="table table-sm table-bordered table-striped">
+                <table id="categoriesprgmTable" class="table table-sm table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nom</th>
-                        <th>Muscle</th>
-                        <th>Catégorie</th>
-                        <th>Répétitions</th>
-                        <th>Séries</th>
-                        <th>Temps repos</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- Données chargées via AJAX -->
+                    <!-- Les données seront chargées via AJAX -->
                     </tbody>
                 </table>
             </div>
@@ -33,36 +28,33 @@
 <script>
     $(document).ready(function() {
         var baseUrl = "<?= base_url(); ?>";
-        var table = $('#exercisesTable').DataTable({
+        var table = $('#categoriesprgmTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
                 url: '<?= base_url('datatable/searchdatatable') ?>',
                 type: 'POST',
-                data: { model: 'ExerciseModel' }
+                data: {
+                    model: 'CategoriesPrgmModel'
+                }
             },
             columns: [
                 { data: 'id' },
                 { data: 'name' },
-                { data: 'muscle_name' },
-                { data: 'category_name' },
-                { data: 'reps' },
-                { data: 'nber_series' },
-                { data: 'rest_time' },
                 {
                     data: null,
                     orderable: false,
                     render: function(data, type, row) {
                         return `
-                            <div class="btn-group" role="group">
-                                <a href="<?= base_url('/admin/exercise/') ?>${row.id}" class="btn btn-sm btn-warning" title="Modifier">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <span class="btn btn-sm btn-danger" title="Supprimer" onclick="deleteExercise(${row.id})">
-                                    <i class="fas fa-trash"></i>
-                                </span>
-                            </div>
-                        `;
+                        <div class="btn-group" role="group">
+                            <a href="<?= base_url('/admin/categories_prgm/') ?>${row.id}" class="btn btn-sm btn-warning" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <span class="btn btn-sm btn-danger" title="Supprimer" onclick="deleteCategory(${row.id})">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </div>
+                    `;
                     }
                 }
             ],
@@ -73,13 +65,15 @@
             }
         });
 
-        window.refreshTable = function() { table.ajax.reload(null, false); };
+        window.refreshTable = function() {
+            table.ajax.reload(null, false);
+        };
     });
 
-    function deleteExercise(id) {
+    function deleteCategory(id) {
         Swal.fire({
             title: `Êtes-vous sûr ?`,
-            text: `Voulez-vous vraiment supprimer cet exercice ?`,
+            text: `Voulez-vous vraiment supprimer cette catégorie ?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: '#dc3545',
@@ -89,21 +83,24 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: base_url + 'admin/exercise/delete',
-                    type: 'POST',
-                    data: { id: id },
-                    success: function(response) {
+                    url : base_url + 'admin/categories_prgm/delete',
+                    type : 'POST',
+                    data : { id : id },
+                    success: function (response) {
                         if(response.success) {
                             refreshTable();
                             Swal.fire({
-                                icon: 'success',
-                                title: 'Succès',
+                                icon : 'success',
+                                title : 'Succès',
                                 text: response.message,
                                 timer: 1500,
                                 timerProgressBar: true,
                                 showConfirmButton: false,
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Erreur lors de la suppression:', error);
                     }
                 });
             }

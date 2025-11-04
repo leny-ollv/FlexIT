@@ -67,7 +67,7 @@ abstract class BaseController extends Controller
      *
      * @var string
      */
-    protected $title_prefix = 'ins3gram';
+    protected $title_prefix = 'FlexIT';
 
     /**
      * Chemin de navigation pour la gestion des breadcrumbs.

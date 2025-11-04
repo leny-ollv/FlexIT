@@ -33,8 +33,10 @@ class MuscleModel extends Model
     protected function getDataTableConfig(): array
     {
         return [
-            'searchable_fields' => ['muscles.id', 'muscles.name'],
-            'select' => 'muscles.id, muscles.name',
+            'searchable_fields' => ['id', 'name'], // Champs par défaut
+            'joins' => [],
+            'select' => '*',
+            'with_deleted' => false, // Inclure les enregistrements soft deleted
         ];
     }
 }

@@ -5,29 +5,46 @@
     "icon": "<i class=\"nav-icon fa-solid fa-house\"></i>",
     "class": "main-menu-accueil"
   },
-  "program": {
-    "title": "Programme",
-    "url": "/admin/program",
-    "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>",
-    "class": "bg-red"
-  },
-  "program": {
-    "title": "Programme",
+  "programmes": {
+    "title": "Programmes",
     "url": "/admin/program",
     "icon": "<i class=\"nav-icon fa-solid fa-dumbbell\"></i>",
-    "class": ""
+    "class": "",
+    "subs": {
+      "program": {
+        "title": "Gestion des programmes",
+        "url": "/admin/program",
+        "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>"
+      },
+      "categories_prgm": {
+        "title": "Catégories",
+        "url": "/admin/categories_prgm",
+        "icon": "<i class=\"nav-icon fas fa-layer-group\"></i>"
+      }
+    }
   },
-  "exercise": {
+  "exercices": {
     "title": "Exercices",
     "url": "/admin/exercise",
     "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>",
-    "class": ""
-  },
-  "category": {
-    "title": "Catégories",
-    "url": "/admin/category",
-    "icon": "<i class=\"nav-icon fas fa-layer-group\"></i>",
-    "class": ""
+    "class": "",
+    "subs": {
+      "exercise": {
+        "title": "Gestion des exercices",
+        "url": "/admin/exercise",
+        "icon": "<i class=\"nav-icon fas fa-dumbbell\"></i>"
+      },
+      "category": {
+        "title": "Catégories",
+        "url": "/admin/category",
+        "icon": "<i class=\"nav-icon fas fa-layer-group\"></i>"
+      },
+      "muscle": {
+        "title": "Muscles",
+        "url": "/admin/muscle",
+        "icon": "<i class=\"nav-icon fas fa-person-running\"></i>"
+      }
+    }
   },
   "administration": {
     "title": "Administration",
