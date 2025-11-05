@@ -100,4 +100,23 @@ class Exercise extends BaseController
 
         return $this->response->setJSON($response);
     }
+
+    public function getSeries($id)
+    {
+        $exerciseModel = model('ExerciseModel');
+        $seriesModel = model('SeriesModel');
+
+        $exercise = $exerciseModel->find($id);
+        if (!$exercise) {
+            return $this->response->setJSON(['error' => 'Exercice non trouvé']);
+        }
+
+        $series = $seriesModel->getByExercise($id);
+
+        return $this->response->setJSON([
+            'id_exercice' => $exercise['id'],
+            'name' => $exercise['name'],
+            'series' => $series,
+        ]);
+    }
 }
