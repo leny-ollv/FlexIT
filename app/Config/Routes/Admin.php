@@ -25,7 +25,15 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->get('new', 'Program::create');
         $routes->get('(:num)', 'Program::edit/$1');
         $routes->post('save', 'Program::save');
+        $routes->get('edit/(:num)', 'Program::edit/$1');
         $routes->post('delete', 'Program::delete');
+    });
+
+    $routes->group('workout', function($routes) {
+        $routes->get('create/(:num)', 'Workout::create/$1');
+        $routes->post('save', 'Workout::save');
+        $routes->get('edit/(:num)', 'Workout::edit/$1');
+        $routes->get('delete/(:num)/(:num)', 'Workout::delete/$1/$2');
     });
 
     $routes->group('exercise', function ($routes) {

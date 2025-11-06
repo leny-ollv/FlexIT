@@ -106,15 +106,35 @@ class Exercise extends BaseController
         $exerciseModel = model('ExerciseModel');
         $seriesModel = model('SeriesModel');
 
+        // On récupère l'exercice
         $exercise = $exerciseModel->find($id);
         if (!$exercise) {
             return $this->response->setJSON(['error' => 'Exercice non trouvé']);
         }
 
+        // On récupère les séries personnalisées si elles existent
         $series = $seriesModel->getByExercise($id);
 
+        // Si aucune série personnalisée, on génère les séries par défaut à partir de l'exercice
+        if (empty($series)) {
+            $series = [];
+
+            // On crée autant de séries que défini par nber_series
+            $nbSeries = $exercise['nber_series'] ?? 3;
+            $defaultReps = $exercise['reps'] ?? 10;
+
+            for ($i = 0; $i < $nbSeries; $i++) {
+                $series[] = [
+                    'id_exercice' => $exercise['id'],
+                    'reps' => $defaultReps,
+                    'weight' => null, // Pas de poids par défaut
+                ];
+            }
+        }
+
+        // Retour en JSON
         return $this->response->setJSON([
-            'id_exercice' => $exercise['id'],
+            'id_exercice' => (int) $exercise['id'],
             'name' => $exercise['name'],
             'series' => $series,
         ]);
