@@ -7,7 +7,7 @@
                 </h1>
 
                 <?php if (isset($program['id'])): ?>
-                    <a href="<?= base_url('admin/workout/create/'.$program['id']) ?>" class="btn btn-success">
+                    <a href="<?= base_url('admin/program/workout/new/'.$program['id']) ?>" class="btn btn-success text-white">
                         Ajouter une séance
                     </a>
                 <?php endif; ?>

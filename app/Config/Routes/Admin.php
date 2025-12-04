@@ -27,13 +27,14 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->post('save', 'Program::save');
         $routes->get('edit/(:num)', 'Program::edit/$1');
         $routes->post('delete', 'Program::delete');
-    });
-
-    $routes->group('workout', function($routes) {
-        $routes->get('create/(:num)', 'Workout::create/$1');
-        $routes->post('save', 'Workout::save');
-        $routes->get('edit/(:num)', 'Workout::edit/$1');
-        $routes->get('delete/(:num)/(:num)', 'Workout::delete/$1/$2');
+        $routes->group('workout', function($routes) {
+            $routes->get('/', 'Workout::index');
+            $routes->get('new/(:num)', 'Workout::create/$1');
+            $routes->get('(:num)', 'Workout::edit/$1');
+            $routes->post('save', 'Workout::save');
+            $routes->get('edit/(:num)', 'Workout::edit/$1');
+            $routes->get('delete/(:num)/(:num)', 'Workout::delete/$1/$2');
+        });
     });
 
     $routes->group('exercise', function ($routes) {
@@ -43,6 +44,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->post('save', 'Exercise::save');
         $routes->post('delete', 'Exercise::delete');
         $routes->get('series/(:num)', 'Exercise::getSeries/$1');
+        $routes->get('info/(:num)', 'Exercise::info/$1');
     });
 
     $routes->group('category', function ($routes) {

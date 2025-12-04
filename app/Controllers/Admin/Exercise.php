@@ -139,4 +139,22 @@ class Exercise extends BaseController
             'series' => $series,
         ]);
     }
+
+    public function info(int $id)
+    {
+        $em = model('ExerciseModel'); // instancie le modèle
+        $exercise = $em->getExercise($id); // récupère l'exercice
+
+        if (!$exercise) {
+            return $this->response->setJSON(['error' => 'Exercice non trouvé']);
+        }
+
+        return $this->response->setJSON([
+            'id' => $exercise['id'],
+            'name' => $exercise['name'],
+            'reps' => $exercise['reps'] ?? '',
+            'nber_series' => $exercise['nber_series'] ?? '',
+            'rest_time' => $exercise['rest_time'] ?? '',
+        ]);
+    }
 }

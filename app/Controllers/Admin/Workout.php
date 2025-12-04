@@ -19,12 +19,17 @@ class Workout extends BaseController
         $this->programModel = new \App\Models\ProgramModel();
     }
 
+    public function index()
+    {
+        return $this->view('/admin/workout/index', ['test'=>'coucou']);
+    }
+
     public function create($id_program)
     {
         $program = $this->programModel->find($id_program);
         $exercises = $this->exerciseModel->findAll();
 
-        return view('admin/workout/form', compact('program', 'exercises'));
+        return $this->view('admin/workout/form', compact('program', 'exercises'));
     }
 
     public function save()
