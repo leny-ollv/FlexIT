@@ -9,7 +9,7 @@
                     Retour
                 </a>
             </div>
-            <form action="<?= base_url('admin/program/workout/save') ?>" method="post">
+            <?= form_open('admin/program/workout/save'); ?>
                 <input type="hidden" name="id_program" value="<?= $program['id'] ?>">
                 <div class="card-body">
                     <div class="mb-3 form-floating">
@@ -18,10 +18,11 @@
                     </div>
                     <hr>
                     <h4 class="mb-3">Exercices</h4>
-                    <div id="exercisesContainer"></div>
-                    <button type="button" id="addExercise" class="btn btn-primary mt-3">
-                        + Ajouter un exercice
-                    </button>
+                    <div id="exercisesContainer">
+                    </div>
+                    <span id="addExercise" class="btn btn-primary mt-3">
+                        <i class="fas fa-plus"></i> Ajouter un exercice
+                    </span>
                 </div>
                 <div class="card-footer text-end">
                     <button type="submit" class="btn btn-success text-white">
@@ -29,152 +30,117 @@
                     </button>
                     <a href="<?= base_url('admin/program/edit/'.$program['id']) ?>" class="btn btn-secondary">Annuler</a>
                 </div>
-            </form>
+            <?= form_close(); ?>
         </div>
     </div>
 </div>
 
 <!-- JS -->
 <script>
-    $(function() {
-        let exIndex = 0;
+    $(document).ready(function(){
 
-        // Génère une ligne de série (rép + poids + bouton supprimer)
-        function generateSeriesLine(exIndex, sIndex, reps = '') {
-            return `
-            <div class="series-line row g-2 mb-2 align-items-center">
-                <div class="col-md-5">
-                    <div class="form-floating">
-                        <input type="number" class="form-control"
-                               name="exercises[${exIndex}][series][${sIndex}][reps]"
-                               value="${reps}" placeholder="Répétitions">
-                        <label>Répétitions</label>
+        // --- GESTION DE L'AJOUT D'UN EXERCICE ---
+        $('#addExercise').on('click', function(){// Au clic sur 'Ajouter Exercice'.
+            let nb = $('.rowExercise').length; // Récupère l'index (0, 1, 2...).
+            const row = `
+            <div class="row rowExercise mb-3" data-nb="${nb}">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-2">
+                                    <select class="form-select selectExercise"></select>
+                                </div>
+                                <div class="col-md-3 mb-2" id="restTimeContainer_${nb}"></div>
+                                <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                                    <span class="deleteExercise fs-4" style="cursor: pointer;" title="Supprimer l'exercice'">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rowInfoExercise mt-3"></div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-md-5">
-                    <div class="form-floating">
-                        <input type="number" class="form-control"
-                               name="exercises[${exIndex}][series][${sIndex}][weight]"
-                               placeholder="Poids (kg)">
-                        <label>Poids (kg)</label>
-                    </div>
-                </div>
-
-                <div class="col-md-2 d-grid">
-                    <button type="button" class="btn btn-danger btn-sm remove-series">Supprimer</button>
-                </div>
             </div>
-        `;
-        }
-
-        // Ajout d'un exercice
-        $('#addExercise').on('click', function() {
-            $('#exercisesContainer').append(`
-            <div class="card p-3 mt-3 exercise-block" data-index="${exIndex}">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">Exercice ${exIndex + 1}</h5>
-                    <button type="button" class="btn btn-sm btn-danger remove-exercise">Supprimer</button>
-                </div>
-
-                <!-- Select exercice -->
-                <div class="form-floating mb-3">
-                    <select name="exercises[${exIndex}][id_exercice]" class="form-select exercise-select" required>
-                        <option value="">-- Choisir un exercice --</option>
-                        <?php foreach ($exercises as $ex): ?>
-                            <option value="<?= $ex['id'] ?>"><?= esc($ex['name']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <label>Exercice</label>
-                </div>
-
-                <!-- Repos spécifique à cet exercice -->
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control rest-time"
-                           name="exercises[${exIndex}][rest]"
-                           placeholder="Temps de repos en secondes">
-                    <label>Temps de repos (secondes)</label>
-                </div>
-
-                <!-- Container séries -->
-                <div class="series-container"></div>
-
-                <!-- Ajouter série manuellement -->
-                <button type="button" class="btn btn-outline-primary btn-sm mt-2 add-series">+ Ajouter une série</button>
-            </div>
-        `);
-
-            exIndex++;
-        });
-
-        // Supprimer un exercice entier
-        $(document).on('click', '.remove-exercise', function() {
-            $(this).closest('.exercise-block').remove();
-            // Optionnel : renuméroter les titres si nécessaire
-        });
-
-        // Ajouter une série manuelle (bouton + Ajouter une série)
-        $(document).on('click', '.add-series', function() {
-            const block = $(this).closest('.exercise-block');
-            const index = block.data('index');
-            const seriesContainer = block.find('.series-container');
-            const sIndex = seriesContainer.children('.series-line').length;
-
-            seriesContainer.append(generateSeriesLine(index, sIndex, ''));
-        });
-
-        // Supprimer une série
-        $(document).on('click', '.remove-series', function() {
-            $(this).closest('.series-line').remove();
-        });
-
-        // Lorsque l'on choisit un exercice, on récupère les infos (reps, nber_series, rest) via AJAX
-        $(document).on('change', '.exercise-select', function() {
-            const id = $(this).val();
-            const block = $(this).closest('.exercise-block');
-            const index = block.data('index');
-            const seriesContainer = block.find('.series-container');
-
-            // Vider les séries précédentes
-            seriesContainer.empty();
-
-            // Reset rest-time field
-            block.find('.rest-time').val('');
-
-            if (!id) return;
-
-            $.ajax({
-                url: "<?= base_url('admin/exercise/info/') ?>" + id,
-                type: "GET",
-                dataType: "json",
-                success: function(data) {
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
-
-                    // Si ta table a un champ pour le repos par exo, je recommande d'exposer son nom ici.
-                    // Exemple : data.rest ou data.rest_time
-                    // On essaie les deux pour être tolérant :
-                    const restVal = data.rest ?? data.rest_time ?? '';
-                    block.find('.rest-time').val(restVal);
-
-                    const repsDefault = data.reps ?? '';
-                    const nb = parseInt(data.nber_series ?? data.nber_series ?? 0, 10) || 0;
-
-                    // Générer les lignes de séries (rép pré-rempli, poids vide)
-                    for (let i = 0; i < nb; i++) {
-                        seriesContainer.append(generateSeriesLine(index, i, repsDefault));
-                    }
-                },
-                error: function(xhr, status, err) {
-                    // Affiche réponse serveur dans console pour debug
-                    console.error('Erreur AJAX:', status, err);
-                    console.log(xhr.responseText);
-                    alert('Erreur lors du chargement de l\'exercice (voir console).');
-                }
+            `;
+            $('#exercisesContainer').append(row); // Ajoute la carte au conteneur.
+            initAjaxSelect2('#exercisesContainer .rowExercise:last-child .selectExercise', {
+                // Initialise le champ de recherche 'Select2' avec l'URL de recherche.
+                url: base_url + '/admin/exercise/search',
+                placeholder: "Rechercher un exercice ...",
+                searchFields : 'name',
+                delay: 250,
             });
         });
 
+        // --- Gestion de la suppression des blocs d'exos ---
+        $('#exercisesContainer').on('click', '.deleteExercise', function(){
+            $(this).closest('.rowExercise').remove(); // Trouve le bloc d'exercice parent le plus proche et le supprime
+        });
+
+        // --- Gestion de la suppression des series ---
+        $('#exercisesContainer').on('click', '.deleteSerie', function(){
+            $(this).closest('.row').remove(); // Trouve la ligne (<div> class="row") qui contient les inputs et la corbeille, et la supprime.
+        });
+
+        // --- GESTION DE LA SÉLECTION D'UN EXERCICE ---
+        $('#exercisesContainer').on('select2:select','.selectExercise', function(){ // Quand un exercice est sélectionné dans la liste déroulante.
+            const id = parseInt($(this).val()); // Récupère l'ID de l'exercice.
+            const nb = $(this).closest('.rowExercise').data('nb'); // Récupère l'index de la ligne actuelle.
+            const rowInfo = $(this).closest('.rowExercise').find('.rowInfoExercise'); // Cible l'endroit pour afficher les séries.
+            const restTimeContainer = $(this).closest('.rowExercise').find(`#restTimeContainer_${nb}`);
+            rowInfo.html(''); // Vide la zone avant d'ajouter les détails.
+            restTimeContainer.html(''); // Vide l'ancienne zone du temps de repos (pour le cas où on change d'exercice)
+            const hiddenIdInput = `<input type="hidden" name="exercises[${nb}][id_exercice]" value="${id}">`;
+            $(this).after(hiddenIdInput)
+            $.ajax({
+                // Fait une requête au serveur pour obtenir les détails de l'exercice (séries, poids...).
+                type : 'GET',
+                url : base_url + 'admin/exercise/info/' + id,
+                success : function(data){
+                    // Si la requête réussit.
+                    if (!data.error) {
+                        // Affichage du champ avec le temps de repos.
+                        const restTimeField = `
+                            <div class="form-floating">
+                                <input value="${data.rest_time}" type="number" class="form-control" name="exercises[${nb}][rest_time]" id="restTime_${nb}" placeholder="Temps de repos (s)" required>
+                                <label for="restTime_${nb}">Repos (s)</label>
+                            </div>
+                        `;
+                        restTimeContainer.html(restTimeField);
+                        for (let i = 0; i < data.nber_series; i++){
+                            // Boucle pour créer un bloc d'input pour chaque série.
+                            const row = `
+                        <div class="row">
+                            <div class="col-md-5 mb-2">
+                                <div class="form-floating">
+                                    <input value="${data.reps}" type="number" class="form-control" name="exercises[${nb}][series][${i}][reps]" id="" placeholder="Répétitions" required>
+                                    <label for="">Repetition</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-floating">
+                                    <input value="${data.Weight}" type="number" class="form-control" name="exercises[${nb}][series][${i}][weight]" id="" placeholder="Poids (kg)" required>
+                                    <label for="">Poids (kg)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                                <span class="deleteSerie fs-4" style="cursor: pointer;" title="Supprimer la série">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                            </div>
+                        </div>
+                        `; // Code HTML des champs (Reps, Poids, Repos) pré-remplis.
+                            rowInfo.append(row); // Ajoute ces champs à la page.
+                        }
+                    }
+                },
+                error : function(err){
+                    // En cas d'erreur de requête.
+                    console.log(err);
+                }
+            });
+        });
     });
 </script>

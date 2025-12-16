@@ -45,6 +45,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->post('delete', 'Exercise::delete');
         $routes->get('series/(:num)', 'Exercise::getSeries/$1');
         $routes->get('info/(:num)', 'Exercise::info/$1');
+        $routes->get('search', 'Exercise::search');
     });
 
     $routes->group('category', function ($routes) {

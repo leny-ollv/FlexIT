@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Traits\DataTableTrait;
+use App\Traits\Select2Searchable;
 use CodeIgniter\Model;
 
 class ExerciseModel extends Model
 {
     use DataTableTrait;
+    use Select2Searchable;
 
     protected $table            = 'exercices';
     protected $primaryKey       = 'id';
@@ -21,6 +23,9 @@ class ExerciseModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
+
+    protected $selectSearchableFields = ['name'];
+    protected $select2DisplayField = 'name';
 
     public function getExercise(int $id): ?array
     {
