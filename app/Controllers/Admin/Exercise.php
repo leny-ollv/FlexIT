@@ -142,19 +142,35 @@ class Exercise extends BaseController
 
     public function info(int $id)
     {
-        $em = model('ExerciseModel'); // instancie le modèle
-        $exercise = $em->getExercise($id); // récupère l'exercice
+        $exercise = model('ExerciseModel')->find($id);
 
         if (!$exercise) {
             return $this->response->setJSON(['error' => 'Exercice non trouvé']);
         }
 
-        return $this->response->setJSON([
-            'id' => $exercise['id'],
-            'name' => $exercise['name'],
-            'reps' => $exercise['reps'] ?? '',
-            'nber_series' => $exercise['nber_series'] ?? '',
-            'rest_time' => $exercise['rest_time'] ?? '',
-        ]);
+        return $this->response->setJSON($exercise);
+    }
+
+    public function search()
+    {
+        $request = $this->request;
+
+        // Vérification AJAX
+        if (!$request->isAJAX()) {
+            return $this->response->setJSON(['error' => 'Requête non autorisée']);
+        }
+
+        $um = Model('ExerciseModel');
+
+        // Paramètres de recherche
+        $search = $request->getGet('search') ?? '';
+        $page = (int)($request->getGet('page') ?? 1);
+        $limit = 20;
+
+        // Utilisation de la méthode du Model (via le trait)
+        $result = $um->quickSearchForSelect2($search, $page, $limit);
+
+        // Réponse JSON
+        return $this->response->setJSON($result);
     }
 }

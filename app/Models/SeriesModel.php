@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Select2Searchable;
 use CodeIgniter\Model;
 
 class SeriesModel extends Model
 {
+    use Select2Searchable;
+
     protected $table         = 'series';
     protected $primaryKey    = 'id';
     protected $useAutoIncrement = true;
@@ -13,6 +16,9 @@ class SeriesModel extends Model
     protected $protectFields = true;
     protected $allowedFields = ['id_program', 'id_exercice', 'reps', 'weight', 'date'];
     protected $useTimestamps = false;
+
+    protected $selectSearchableFields = ['name'];
+    protected $select2DisplayField = 'name';
 
     public function getByProgram(int $programId): array
     {
