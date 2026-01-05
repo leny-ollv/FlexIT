@@ -24,7 +24,7 @@ class Workout extends Migration
             '`order`' => ['type' => 'INT', 'null' => true],
         ]);
 
-        $this->forge->addPrimaryKey(['id_program', 'id_exercice']);
+        $this->forge->addPrimaryKey(['id_program', 'id_exercice', 'date']);
         $this->forge->addForeignKey('id_program', 'program', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_exercice', 'exercices', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('workout');

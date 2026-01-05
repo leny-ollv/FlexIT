@@ -40,19 +40,19 @@ class Workout extends BaseController
         $data = $this->request->getPost();
 
         // --- BOUCLE PRINCIPALE : Un enregistrement par EXERCICE ---
-        foreach ($data['exercises'] ?? [] as $exIndex => $exerciseData) {
+        foreach ($data['exercises'] ?? [] as $exerciseData) {
 
             $idExercise = $exerciseData['id_exercice'];
-            $restTime = $exerciseData['rest_time'];
             $seriesData = $exerciseData['series'];
+            $order = $exerciseData['order'];
 
             // Enregistrement dans la table WORKOUT (pour chaque exercice)
             $workoutInsertData = [
                 'id_program'  => $data['id_program'],
                 'id_exercice' => $idExercise,
-                'rest_time'   => $restTime,
-                'order'       => $exIndex + 1, // Ordre de l'exercice dans la séance
-                'date'        => $data['day']
+                'date'        => $data['day'],
+                'rest_time'   => $exerciseData['rest_time'],
+                'order'       => $order
             ];
 
             // On insère l'exercice dans la table 'workout'
@@ -77,9 +77,18 @@ class Workout extends BaseController
             ->with('success', 'Séance créée avec succès.');
     }
 
-    public function edit($id)
+    public function edit($id_program, $date)
     {
-        // (Page similaire à create(), mais avec les valeurs existantes)
+        helper('form');
+        $data['program'] = $this->programModel->find($id_program);
+        $data['selected_date'] = $date;
+        $data['workout_details'] = $this->workoutModel->getWorkoutByDate($id_program, $date);
+
+        foreach ($data['workout_details'] as &$workout) {
+            $workout['name'] = $this->exerciseModel->getExercise($workout['id_exercice']);
+            $workout['series'] = $this->seriesModel->getSerieByProgramAndDate($id_program, $date);
+        }
+        return $this->view('/admin/workout/form', $data);
     }
 
     public function delete($id, $id_program)

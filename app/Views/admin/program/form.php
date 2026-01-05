@@ -51,11 +51,11 @@
                             <tbody>
                             <?php foreach ($workouts as $w): ?>
                                 <tr>
-                                    <td><?= esc($w['day']) ?></td>
+                                    <td><?= esc($w['date']) ?></td>
                                     <td><?= count($w['exercises'] ?? []) ?></td>
                                     <td>
-                                        <a href="<?= base_url('admin/workout/edit/'.$w['id']) ?>" class="btn btn-sm btn-primary">Modifier</a>
-                                        <a href="<?= base_url('admin/workout/delete/'.$w['id'].'/'.$program['id']) ?>"
+                                        <a href="<?= base_url('admin/program/workout/edit/'.$program['id'].'/'.$w['date']) ?>" class="btn btn-sm btn-primary">Modifier</a>
+                                        <a href="<?= base_url('admin/program/workout/delete/'.$w['date'].'/'.$program['id']) ?>"
                                            class="btn btn-sm btn-danger"
                                            onclick="return confirm('Supprimer cette séance ?')">Supprimer</a>
                                     </td>
