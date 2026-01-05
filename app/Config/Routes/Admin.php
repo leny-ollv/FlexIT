@@ -30,10 +30,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->group('workout', function($routes) {
             $routes->get('/', 'Workout::index');
             $routes->get('new/(:num)', 'Workout::create/$1');
-            $routes->get('(:num)', 'Workout::edit/$1');
             $routes->post('save', 'Workout::save');
-            $routes->get('edit/(:num)', 'Workout::edit/$1');
-            $routes->get('delete/(:num)/(:num)', 'Workout::delete/$1/$2');
+            $routes->get('edit/(:num)/(:any)', 'Workout::edit/$1/$2');
+            $routes->get('delete/(:num)/(:any)', 'Workout::delete/$1/$2');
         });
     });
 

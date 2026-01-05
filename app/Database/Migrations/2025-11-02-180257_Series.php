@@ -24,7 +24,6 @@ class Series extends Migration
             'date' => ['type' => 'DATE', 'null' => true],
         ]);
 
-        $this->forge->addPrimaryKey(['id_program', 'id_exercice', 'date']);
         $this->forge->addForeignKey('id_program', 'program', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_exercice', 'exercices', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('series');

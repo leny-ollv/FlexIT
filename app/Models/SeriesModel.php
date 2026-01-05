@@ -30,30 +30,11 @@ class SeriesModel extends Model
         return $this->where('id_exercice', $exerciseId)->findAll();
     }
 
-    public function getExercisesByWorkout($workoutId)
+    public function getSerieByProgramAndDate(int $programId, string $date): array
     {
-        $builder = $this->db->table('series s');
-        $builder->select('s.id_exercice, e.name AS exercise_name, s.reps, s.weight');
-        $builder->join('exercise e', 'e.id = s.id_exercice', 'left');
-        $builder->where('s.id_workout', $workoutId);
-        $result = $builder->get()->getResultArray();
-
-        $grouped = [];
-        foreach ($result as $row) {
-            $id = $row['id_exercice'];
-            if (!isset($grouped[$id])) {
-                $grouped[$id] = [
-                    'id_exercice' => $id,
-                    'name' => $row['exercise_name'],
-                    'series' => [],
-                ];
-            }
-            $grouped[$id]['series'][] = [
-                'reps' => $row['reps'],
-                'weight' => $row['weight'],
-            ];
-        }
-
-        return array_values($grouped);
+        // On récupère les exercices pour ce programme à cette date précise
+        return $this->where('id_program', $programId)
+            ->where('date', $date)
+            ->findAll();
     }
 }

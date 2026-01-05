@@ -8,6 +8,15 @@ use CodeIgniter\Model;
 
 class Program extends BaseController
 {
+    protected $workoutModel;
+    protected $programModel;
+
+    public function __construct()
+    {
+        $this->workoutModel = new \App\Models\WorkoutModel();
+        $this->programModel = new \App\Models\ProgramModel();
+    }
+
     public function index()
     {
         return $this->view('/admin/program/index', ['test'=>'coucou']);
@@ -22,11 +31,14 @@ class Program extends BaseController
     public function edit($id)
     {
         helper('form');
-        $pm = Model('ProgramModel');
-        $program = $pm->getProgram($id);
-        return $this->view('/admin/program/form', ['program'=>$program]);
-    }
+        $program = $this->programModel->getProgram($id);
+        $workouts = $this->workoutModel->getWorkoutsByProgramId($id);
 
+        return $this->view('/admin/program/form', [
+            'program' => $program,
+            'workouts' => $workouts
+        ]);
+    }
     public function save() {
         $data = $this->request->getPost();
         $pm = Model('ProgramModel');
