@@ -21,58 +21,82 @@
                     </div>
                     <hr>
                     <h4 class="mb-3">Exercices</h4>
-                    <pre>
-                        <?= print_r($workout_details); ?>
-                    </pre>
+<!--                    <pre>-->
+<!--                        --><?php //= print_r($workout_details); ?>
+<!--                    </pre>-->
                     <div id="exercisesContainer">
                         <?php if (!empty($workout_details)): ?>
-                            <?php foreach ($workout_details as $workout): ?>
-                            <div class="row rowExercise mb-3" data-nb="${nb}">
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-8 mb-2">
-                                                    <select class="form-select selectExercise">
-                                                        <option value="<?= esc($workout['id_exercice']) ?>" selected>
-                                                            <?= esc($workout['name']['name']) ?> </option>
-                                                    </select>
+                            <?php foreach ($workout_details as $nb => $workout): ?>
+                                <div class="row rowExercise mb-3" data-nb="<?= $nb ?>">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8 mb-2">
+                                                        <select class="form-select selectExercise">
+                                                            <option value="<?= esc($workout['id_exercice']) ?>" selected>
+                                                                <?= esc($workout['name']['name']) ?>
+                                                            </option>
+                                                        </select>
+                                                        <input type="hidden" name="exercises[<?= $nb ?>][id_exercice]" value="<?= $workout['id_exercice'] ?>">
+                                                        <input type="hidden" name="exercises[<?= $nb ?>][order]" value="<?= $nb + 1 ?>">
+                                                    </div>
+                                                    <div class="col-md-3 mb-2">
+                                                        <div class="form-floating">
+                                                            <input type="number"
+                                                                   class="form-control"
+                                                                   name="exercises[<?= $nb ?>][rest_time]"
+                                                                   value="<?= $workout['name']['rest_time'] ?>"
+                                                                   placeholder="Temps de repos (s)"
+                                                                   required>
+                                                            <label>Repos (s)</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                                <span class="deleteExercise fs-4" style="cursor: pointer;" title="Supprimer l'exercice">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-3 mb-2" id="restTimeContainer_${nb}"></div>
-                                                <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
-                                        <span class="deleteExercise fs-4" style="cursor: pointer;" title="Supprimer l'exercice'">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </span>
+                                                <div class="rowInfoExercise mt-3">
+                                                    <?php if (!empty($workout['series'])): ?>
+                                                        <?php foreach ($workout['series'] as $i => $serie): ?>
+                                                            <div class="row">
+                                                                <div class="col-md-5 mb-2">
+                                                                    <div class="form-floating">
+                                                                        <input value="<?= $serie['reps'] ?>"
+                                                                               type="number"
+                                                                               class="form-control"
+                                                                               name="exercises[<?= $nb ?>][series][<?= $i ?>][reps]"
+                                                                               placeholder="Répétitions"
+                                                                               required>
+                                                                        <label>Répétitions</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-2">
+                                                                    <div class="form-floating">
+                                                                        <input value="<?= $serie['weight'] ?>"
+                                                                               type="number"
+                                                                               class="form-control"
+                                                                               name="exercises[<?= $nb ?>][series][<?= $i ?>][weight]"
+                                                                               placeholder="Poids (kg)"
+                                                                               required>
+                                                                        <label>Poids (kg)</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                                            <span class="deleteSerie fs-4" style="cursor: pointer;" title="Supprimer la série">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </span>
+                                                                </div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
-                                            <div class="rowInfoExercise mt-3"></div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <?php if (!empty($workout['series'])): ?>
-                                <?php foreach ($workout['series'] as $i => $serie): ?>
-                                        <div class="row">
-                                            <div class="col-md-5 mb-2">
-                                                <div class="form-floating">
-                                                    <input value="${data.reps}" type="number" class="form-control" name="exercises[${nb}][series][${i}][reps]" id="" placeholder="Répétitions" required>
-                                                    <label for="">Repetition</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-2">
-                                                <div class="form-floating">
-                                                    <input value="${data.Weight}" type="number" class="form-control" name="exercises[${nb}][series][${i}][weight]" id="" placeholder="Poids (kg)" required>
-                                                    <label for="">Poids (kg)</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
-                                    <span class="deleteSerie fs-4" style="cursor: pointer;" title="Supprimer la série">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </span>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
