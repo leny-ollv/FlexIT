@@ -11,105 +11,109 @@
                 </a>
             </div>
             <?= form_open('admin/program/workout/save'); ?>
-                <input type="hidden" name="id_program" value="<?= $program['id'] ?>">
-                <div class="card-body">
+            <input type="hidden" name="id_program" value="<?= $program['id'] ?>">
+            <div class="card-body">
 
-                    <div class="mb-3 form-floating">
-                        <input type="date" class="form-control" id="day" name="day"
-                               value="<?= $selected_date ?? '' ?>" required>
-                        <label for="day">Date de la séance</label>
-                    </div>
-                    <hr>
-                    <h4 class="mb-3">Exercices</h4>
-<!--                    <pre>-->
-<!--                        --><?php //= print_r($workout_details); ?>
-<!--                    </pre>-->
-                    <div id="exercisesContainer">
-                        <?php if (!empty($workout_details)): ?>
-                            <?php foreach ($workout_details as $nb => $workout): ?>
-                                <div class="row rowExercise mb-3" data-nb="<?= $nb ?>">
-                                    <div class="col">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-8 mb-2">
-                                                        <select class="form-select selectExercise">
-                                                            <option value="<?= esc($workout['id_exercice']) ?>" selected>
-                                                                <?= esc($workout['name']['name']) ?>
-                                                            </option>
-                                                        </select>
-                                                        <input type="hidden" name="exercises[<?= $nb ?>][id_exercice]" value="<?= $workout['id_exercice'] ?>">
-                                                        <input type="hidden" name="exercises[<?= $nb ?>][order]" value="<?= $nb + 1 ?>">
+                <div class="mb-3 form-floating">
+                    <input type="date" class="form-control" id="day" name="day"
+                           value="<?= $selected_date ?? '' ?>" required>
+                    <label for="day">Date de la séance</label>
+                </div>
+                <hr>
+                <h4 class="mb-3">Exercices</h4>
+<!--                                    <pre>-->
+<!--                                        --><?php //= print_r($workout_details); ?>
+<!--                                    </pre>-->
+                <div id="exercisesContainer">
+                    <?php if (!empty($workout_details)): ?>
+                        <?php foreach ($workout_details as $nb => $workout): ?>
+                            <div class="row rowExercise mb-3" data-nb="<?= $nb ?>">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-8 mb-2">
+                                                    <select class="form-select selectExercise">
+                                                        <option value="<?= esc($workout['id_exercice']) ?>" selected>
+                                                            <?= esc($workout['name']['name']) ?>
+                                                        </option>
+                                                    </select>
+                                                    <input type="hidden" name="exercises[<?= $nb ?>][id_exercice]" value="<?= $workout['id_exercice'] ?>">
+                                                    <input type="hidden" name="exercises[<?= $nb ?>][order]" value="<?= $nb + 1 ?>">
+                                                </div>
+                                                <div class="col-md-3 mb-2">
+                                                    <div class="form-floating">
+                                                        <input type="number"
+                                                               class="form-control"
+                                                               name="exercises[<?= $nb ?>][rest_time]"
+                                                               value="<?= $workout['name']['rest_time'] ?>"
+                                                               placeholder="Temps de repos (s)"
+                                                               required>
+                                                        <label>Repos (s)</label>
                                                     </div>
-                                                    <div class="col-md-3 mb-2">
-                                                        <div class="form-floating">
-                                                            <input type="number"
-                                                                   class="form-control"
-                                                                   name="exercises[<?= $nb ?>][rest_time]"
-                                                                   value="<?= $workout['name']['rest_time'] ?>"
-                                                                   placeholder="Temps de repos (s)"
-                                                                   required>
-                                                            <label>Repos (s)</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                                                </div>
+                                                <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
                                 <span class="deleteExercise fs-4" style="cursor: pointer;" title="Supprimer l'exercice">
                                     <i class="fa-solid fa-trash"></i>
                                 </span>
-                                                    </div>
                                                 </div>
-                                                <div class="rowInfoExercise mt-3">
-                                                    <?php if (!empty($workout['series'])): ?>
-                                                        <?php foreach ($workout['series'] as $i => $serie): ?>
-                                                            <div class="row">
-                                                                <div class="col-md-5 mb-2">
-                                                                    <div class="form-floating">
-                                                                        <input value="<?= $serie['reps'] ?>"
-                                                                               type="number"
-                                                                               class="form-control"
-                                                                               name="exercises[<?= $nb ?>][series][<?= $i ?>][reps]"
-                                                                               placeholder="Répétitions"
-                                                                               required>
-                                                                        <label>Répétitions</label>
-                                                                    </div>
+                                            </div>
+                                            <div class="rowInfoExercise mt-3">
+                                                <?php if (!empty($workout['series'])): ?>
+                                                    <?php foreach ($workout['series'] as $i => $serie): ?>
+                                                        <div class="row">
+                                                            <div class="col-md-5 mb-2">
+                                                                <div class="form-floating">
+                                                                    <input value="<?= $serie['reps'] ?>"
+                                                                           type="number"
+                                                                           class="form-control"
+                                                                           name="exercises[<?= $nb ?>][series][<?= $i ?>][reps]"
+                                                                           placeholder="Répétitions"
+                                                                           required>
+                                                                    <label>Répétitions</label>
                                                                 </div>
-                                                                <div class="col-md-6 mb-2">
-                                                                    <div class="form-floating">
-                                                                        <input value="<?= $serie['weight'] ?>"
-                                                                               type="number"
-                                                                               class="form-control"
-                                                                               name="exercises[<?= $nb ?>][series][<?= $i ?>][weight]"
-                                                                               placeholder="Poids (kg)"
-                                                                               required>
-                                                                        <label>Poids (kg)</label>
-                                                                    </div>
+                                                            </div>
+                                                            <div class="col-md-6 mb-2">
+                                                                <div class="form-floating">
+                                                                    <input value="<?= $serie['weight'] ?>"
+                                                                           type="number"
+                                                                           class="form-control"
+                                                                           name="exercises[<?= $nb ?>][series][<?= $i ?>][weight]"
+                                                                           placeholder="Poids (kg)"
+                                                                           required>
+                                                                    <label>Poids (kg)</label>
                                                                 </div>
-                                                                <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                                                            </div>
+                                                            <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
                                             <span class="deleteSerie fs-4" style="cursor: pointer;" title="Supprimer la série">
                                                 <i class="fa-solid fa-trash"></i>
                                             </span>
-                                                                </div>
                                                             </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
-                                                </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
                                             </div>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary addSerie mt-2">
+                                                <i class="fas fa-plus"></i> Ajouter une série
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                    <span id="addExercise" class="btn btn-primary mt-3">
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+                <span id="addExercise" class="btn btn-primary mt-3">
                         <i class="fas fa-plus"></i> Ajouter un exercice
                     </span>
-                </div>
-                <div class="card-footer text-end">
-                    <button type="submit" class="btn btn-success text-white">
-                        Enregistrer la séance
-                    </button>
-                    <a href="<?= base_url('admin/program/edit/'.$program['id']) ?>" class="btn btn-secondary">Annuler</a>
-                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-success text-white">
+                    Enregistrer la séance
+                </button>
+                <a href="<?= base_url('admin/program/edit/'.$program['id']) ?>" class="btn btn-secondary">Annuler</a>
+            </div>
             <?= form_close(); ?>
         </div>
     </div>
@@ -139,6 +143,10 @@
                                 </div>
                             </div>
                             <div class="rowInfoExercise mt-3"></div>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary addSerie mt-2">
+                                <i class="fas fa-plus"></i> Ajouter une série
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -162,6 +170,49 @@
         // --- Gestion de la suppression des series ---
         $('#exercisesContainer').on('click', '.deleteSerie', function(){
             $(this).closest('.row').remove(); // Trouve la ligne (<div> class="row") qui contient les inputs et la corbeille, et la supprime.
+        });
+
+        // --- Gestion de l'ajout d'une série ---
+        $('#exercisesContainer').on('click', '.addSerie', function () {
+
+            const exerciseBlock = $(this).closest('.rowExercise');
+            const nb = exerciseBlock.data('nb');
+            const rowInfo = exerciseBlock.find('.rowInfoExercise');
+
+            // Calcul du prochain index de série
+            const serieIndex = rowInfo.find('.row').length;
+
+            const row = `
+        <div class="row">
+            <div class="col-md-5 mb-2">
+                <div class="form-floating">
+                    <input type="number"
+                           class="form-control"
+                           name="exercises[${nb}][series][${serieIndex}][reps]"
+                           placeholder="Répétitions"
+                           required>
+                    <label>Répétitions</label>
+                </div>
+            </div>
+            <div class="col-md-6 mb-2">
+                <div class="form-floating">
+                    <input type="number"
+                           class="form-control"
+                           name="exercises[${nb}][series][${serieIndex}][weight]"
+                           placeholder="Poids (kg)"
+                           required>
+                    <label>Poids (kg)</label>
+                </div>
+            </div>
+            <div class="col-md-1 mb-2 d-flex justify-content-center align-items-center">
+                <span class="deleteSerie fs-4" style="cursor:pointer">
+                    <i class="fa-solid fa-trash"></i>
+                </span>
+            </div>
+        </div>
+    `;
+
+            rowInfo.append(row);
         });
 
         // --- GESTION DE LA SÉLECTION D'UN EXERCICE ---

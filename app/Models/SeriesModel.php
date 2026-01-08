@@ -30,10 +30,11 @@ class SeriesModel extends Model
         return $this->where('id_exercice', $exerciseId)->findAll();
     }
 
-    public function getSerieByProgramAndDate(int $programId, string $date): array
+    public function getSerieByProgramAndDate(int $programId, int $exerciseId, string $date): array
     {
         // On récupère les exercices pour ce programme à cette date précise
         return $this->where('id_program', $programId)
+            ->where('id_exercice', $exerciseId)
             ->where('date', $date)
             ->findAll();
     }
