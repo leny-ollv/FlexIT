@@ -55,7 +55,7 @@
                                     <td><?= count($w['exercises'] ?? []) ?></td>
                                     <td>
                                         <a href="<?= base_url('admin/program/workout/edit/'.$program['id'].'/'.$w['date']) ?>" class="btn btn-sm btn-primary">Modifier</a>
-                                        <a href="<?= base_url('admin/program/workout/delete/'.$w['date'].'/'.$program['id']) ?>"
+                                        <a href="<?= base_url('admin/program/workout/delete/'.$program['id'].'/'.$w['date']) ?>"
                                            class="btn btn-sm btn-danger"
                                            onclick="return confirm('Supprimer cette séance ?')">Supprimer</a>
                                     </td>

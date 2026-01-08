@@ -39,6 +39,20 @@ class Workout extends BaseController
     {
         $data = $this->request->getPost();
 
+        $idProgram = $data['id_program'];
+        $date      = $data['day'];
+
+        // SUPPRESSION DE LA SÉANCE EXISTANTE (WORKOUT + SERIES)
+        $this->workoutModel
+            ->where('id_program', $idProgram)
+            ->where('date', $date)
+            ->delete();
+
+        $this->seriesModel
+            ->where('id_program', $idProgram)
+            ->where('date', $date)
+            ->delete();
+
         // --- BOUCLE PRINCIPALE : Un enregistrement par EXERCICE ---
         foreach ($data['exercises'] ?? [] as $exerciseData) {
 
@@ -86,14 +100,25 @@ class Workout extends BaseController
 
         foreach ($data['workout_details'] as &$workout) {
             $workout['name'] = $this->exerciseModel->getExercise($workout['id_exercice']);
-            $workout['series'] = $this->seriesModel->getSerieByProgramAndDate($id_program, $date);
+            $workout['series'] = $this->seriesModel->getSerieByProgramAndDate($id_program, $workout['id_exercice'] ,$date);
         }
         return $this->view('/admin/workout/form', $data);
     }
 
-    public function delete($id, $id_program)
+    public function delete($id_program, $date)
     {
-        $this->workoutModel->delete($id);
-        return redirect()->to('/admin/program/edit/'.$id_program);
+        $this->seriesModel
+            ->where('id_program', $id_program)
+            ->where('date', $date)
+            ->delete();
+
+        $this->workoutModel
+            ->where('id_program', $id_program)
+            ->where('date', $date)
+            ->delete();
+
+        return redirect()
+            ->to('/admin/program/edit/' . $id_program)
+            ->with('success', 'Séance supprimée avec succès.');
     }
 }
