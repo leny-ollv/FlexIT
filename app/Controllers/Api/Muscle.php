@@ -5,7 +5,7 @@ namespace App\Controllers\Api;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
-class Exercice extends ResourceController
+class Muscle extends ResourceController
 {
     /**
      * Return an array of resource objects, themselves in array format.
@@ -27,11 +27,10 @@ class Exercice extends ResourceController
     public function show($id = null)
     {
         try {
-            $em = model('ExerciseModel');
-            $exercice = $em->find($id);
-            return $this->respond($exercice);
-        }
-        catch (\Exception $e) {
+            $mm = model('MuscleModel');
+            $muscle = $mm->find($id);
+            return $this->respond($muscle);
+        } catch (\Exception $e) {
             return $this->respond(['message' => $e->getMessage()], 500);
         }
     }
