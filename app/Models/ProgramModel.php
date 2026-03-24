@@ -42,6 +42,15 @@ class ProgramModel extends Model
                 ->where('program.id', $id)
                 ->first();
     }
+
+    public function getProgramByIdUser($id) : array {
+        return
+            $this
+                ->select('program.id, program.name')
+                ->where('program.id_user', $id)
+                ->findAll();
+    }
+
     protected function getDataTableConfig(): array
     {
         return [

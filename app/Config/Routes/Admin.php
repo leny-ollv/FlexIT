@@ -70,5 +70,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->post('save', 'Muscle::save');
         $routes->post('delete', 'Muscle::delete');
     });
+
+    $routes->group('workoutlog', function($routes) {
+        $routes->get('/', 'WorkoutLog::index');
+        $routes->get('show/(:num)', 'WorkoutLog::show/$1');
+        $routes->get('delete/(:num)', 'WorkoutLog::delete/$1');
+    });
 });
 

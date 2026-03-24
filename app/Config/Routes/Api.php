@@ -10,6 +10,7 @@ $routes->group('api',['namespace' => 'App\Controllers\Api'],function($routes){
     });
     $routes->group('programs', ['filter' => 'apitoken'], function($routes){
         $routes->get('all', 'Program::index');
+        $routes->get('user/(:num)', 'Program::showall/$1');
         $routes->get('(:num)', 'Program::show/$1');
         $routes->group('workout', ['filter' => 'apitoken'], function($routes){
             $routes->get('all', 'Workout::index');

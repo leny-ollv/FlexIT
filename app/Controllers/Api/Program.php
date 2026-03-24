@@ -29,7 +29,7 @@ class Program extends ResourceController
         try {
             $pm = model('ProgramModel');
             $wm = model('WorkoutModel');
-            $sm = model('SerieModel');
+            $sm = model('SeriesModel');
 
             $program = $pm->find($id);
             $workouts = $wm->getWorkoutsByProgramId($id);
@@ -44,6 +44,22 @@ class Program extends ResourceController
             return $this->respond($program);
         }
         catch (\Exception $e) {
+            return $this->respond(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function showall($id = null)
+    {
+        try {
+            if (!$id) {
+                return $this->fail('User ID est requis', 400);
+            }
+
+            $pm = model('ProgramModel');
+            $program = $pm->getProgramByIdUser($id);
+            return $this->respond($program);
+
+        } catch (\Exception $e) {
             return $this->respond(['message' => $e->getMessage()], 500);
         }
     }
