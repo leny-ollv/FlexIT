@@ -108,6 +108,49 @@
                         <i class="fas fa-plus"></i> Ajouter un exercice
                     </span>
             </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Bilan de la séance</h5>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Note (1 à 5) :</label>
+                            <select name="rating" class="form-select form-select-sm">
+                                <?php for($i=1; $i<=5; $i++): ?>
+                                    <option value="<?= $i ?>" <?= (isset($workout_log['rating']) && $workout_log['rating'] == $i) ? 'selected' : ($i == 3 && !isset($workout_log['rating']) ? 'selected' : '') ?>>
+                                        <?= $i ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label fw-bold">Fatigue :</label>
+                            <div class="d-flex gap-3 mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="fatigue" value="0" id="f0" <?= (isset($workout_log['fatigue']) && $workout_log['fatigue'] == 0) ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="f0">Faible</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="fatigue" value="1" id="f1" <?= (isset($workout_log['fatigue']) && $workout_log['fatigue'] == 1) ? 'checked' : (!isset($workout_log['fatigue']) ? 'checked' : '') ?>>
+                                    <label class="form-check-label" for="f1">Moyenne</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="fatigue" value="2" id="f2" <?= (isset($workout_log['fatigue']) && $workout_log['fatigue'] == 2) ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="f2">Élevée</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <label class="form-label fw-bold">Commentaire :</label>
+                        <textarea name="comment" class="form-control" rows="3" placeholder="Vos impressions..."><?= esc($workout_log['comment'] ?? '') ?></textarea>
+                    </div>
+                </div>
+            </div>
+
             <div class="card-footer text-end">
                 <button type="submit" class="btn btn-success text-white">
                     Enregistrer la séance
