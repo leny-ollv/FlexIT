@@ -12,6 +12,7 @@ $routes->group('api',['namespace' => 'App\Controllers\Api'],function($routes){
         $routes->get('all', 'Program::index');
         $routes->get('user/(:num)', 'Program::showall/$1');
         $routes->get('(:num)', 'Program::show/$1');
+        $routes->post('delete', 'Program::delete');
         $routes->group('workout', ['filter' => 'apitoken'], function($routes){
             $routes->get('all', 'Workout::index');
             $routes->get('(:num)', 'Workout::show/$1');
