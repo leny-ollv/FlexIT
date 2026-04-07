@@ -119,7 +119,7 @@ class Program extends ResourceController
         $id = $this->request->getPost('id');
         $userId = $this->request->getPost('user_id');
 
-        $pm = Model('ProgramModel');
+        $pm = model('ProgramModel');
 
         // VERIFICATION : Est-ce que ce programme appartient à cet utilisateur
         $program = $pm->where('id', $id)->where('user_id', $userId)->first();
