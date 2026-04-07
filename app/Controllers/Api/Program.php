@@ -115,8 +115,32 @@ class Program extends ResourceController
      *
      * @return ResponseInterface
      */
-    public function delete($id = null)
-    {
-        //
+    public function delete() {
+        $id = $this->request->getPost('id');
+        $userId = $this->request->getPost('user_id');
+
+        $pm = Model('ProgramModel');
+
+        // VERIFICATION : Est-ce que ce programme appartient à cet utilisateur
+        $program = $pm->where('id', $id)->where('user_id', $userId)->first();
+
+        if (!$program) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Accès refusé ou programme inexistant'
+            ]);
+        }
+
+        // Si oui, alors on supprime le programme
+        if ($pm->delete($id)) {
+            $response = [
+                'success' => true,
+                'message' => 'Le programme a bien été supprimé'
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'Erreur lors de la suppression'];
+        }
+
+        return $this->response->setJSON($response);
     }
 }
