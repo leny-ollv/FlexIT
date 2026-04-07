@@ -115,7 +115,7 @@ class Program extends ResourceController
      *
      * @return ResponseInterface
      */
-    public function delete() {
+    public function delete($id = null) {
         $id = $this->request->getPost('id');
         $userId = $this->request->getPost('user_id');
 
