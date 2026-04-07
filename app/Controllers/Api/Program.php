@@ -117,12 +117,12 @@ class Program extends ResourceController
      */
     public function delete($id = null) {
         $id = $this->request->getPost('id');
-        $userId = $this->request->getPost('user_id');
+        $userId = $this->request->getPost('id_user');
 
         $pm = model('ProgramModel');
 
         // VERIFICATION : Est-ce que ce programme appartient à cet utilisateur
-        $program = $pm->where('id', $id)->where('user_id', $userId)->first();
+        $program = $pm->where('id', $id)->where('id_user', $userId)->first();
 
         if (!$program) {
             return $this->response->setJSON([
