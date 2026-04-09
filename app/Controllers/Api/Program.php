@@ -132,8 +132,6 @@ class Program extends ResourceController
      */
     public function update($id = null)
     {
-        $idProgram = $this->request->getPost('id');
-        $id = $id ?? $idProgram;
         $name = $this->request->getPost('name');
         $userId  = $this->request->getPost('id_user');
 
