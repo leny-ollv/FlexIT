@@ -132,7 +132,34 @@ class Program extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $name    = $this->request->getPost('name');
+        $userId  = $this->request->getPost('id_user');
+
+        $pm = model('ProgramModel');
+
+        if (empty($name) || empty($userId)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Données manquantes (nom ou id_user)'
+            ]);
+        }
+
+        $data = [
+            'name'    => $name,
+            'id_user' => $userId,
+        ];
+
+        if ($pm->update($id, $data)) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Programme modifier avec succès !'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erreur lors de la modification en base.'
+            ]);
+        }
     }
 
     /**
