@@ -28,7 +28,10 @@ class Auth extends ResourceController
             }
 
             helper('token');
-            return $this->respond(['token' => generateToken($user->id)]);
+            return $this->respond([
+                'token'   => generateToken($user->id),
+                'id_user' => $user->id
+            ]);
 
         } catch (\Exception $e) {
             return $this->respond(['message' => $e->getMessage()], 500);
