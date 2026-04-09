@@ -81,7 +81,34 @@ class Program extends ResourceController
      */
     public function create()
     {
-        //
+        $name    = $this->request->getPost('name');
+        $userId  = $this->request->getPost('id_user');
+
+        $pm = model('ProgramModel');
+
+        if (empty($name) || empty($userId)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Données manquantes (nom ou id_user)'
+            ]);
+        }
+
+        $data = [
+            'name'    => $name,
+            'id_user' => $userId,
+        ];
+
+        if ($pm->insert($data)) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Programme créé avec succès !'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erreur lors de l’insertion en base.'
+            ]);
+        }
     }
 
     /**
