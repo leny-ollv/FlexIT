@@ -91,4 +91,75 @@ class Workout extends ResourceController
     {
         //
     }
+
+    /**
+     * Réécrit toutes les séances/exercices/séries d'un programme.
+     * Reçoit en JSON : { "workouts": [ { "date": "YYYY-MM-DD",
+     *   "exercises": [ { "id_exercice": int, "rest_time": "HH:MM:SS",
+     *     "order": int, "series": [ { "reps": int, "weight": int }, ... ] }, ... ] }, ... ] }
+     */
+    public function save($programId = null)
+    {
+        if (!$programId) {
+            return $this->fail('Program ID est requis', 400);
+        }
+
+        $payload = $this->request->getJSON(true);
+        if (!is_array($payload) || !isset($payload['workouts']) || !is_array($payload['workouts'])) {
+            return $this->fail('Payload invalide : workouts manquant', 400);
+        }
+
+        $pm = model('ProgramModel');
+        $program = $pm->find($programId);
+        if (!$program) {
+            return $this->fail('Programme introuvable', 404);
+        }
+
+        $db = \Config\Database::connect();
+        $db->transStart();
+
+        // On vide les anciennes données du programme
+        $db->table('workout')->where('id_program', $programId)->delete();
+        $db->table('series')->where('id_program', $programId)->delete();
+
+        // On réinsère
+        foreach ($payload['workouts'] as $workout) {
+            $date = $workout['date'] ?? null;
+            if (!$date) {
+                continue;
+            }
+            foreach ($workout['exercises'] ?? [] as $exercise) {
+                $db->table('workout')->insert([
+                    'id_program'  => $programId,
+                    'id_exercice' => (int) ($exercise['id_exercice'] ?? 0),
+                    'date'        => $date,
+                    'rest_time'   => $exercise['rest_time'] ?? '00:01:00',
+                    'order'       => (int) ($exercise['order'] ?? 1),
+                ]);
+                foreach ($exercise['series'] ?? [] as $serie) {
+                    $db->table('series')->insert([
+                        'id_program'  => $programId,
+                        'id_exercice' => (int) ($exercise['id_exercice'] ?? 0),
+                        'reps'        => (int) ($serie['reps'] ?? 0),
+                        'weight'      => (int) ($serie['weight'] ?? 0),
+                        'date'        => $date,
+                    ]);
+                }
+            }
+        }
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return $this->respond([
+                'success' => false,
+                'message' => 'Erreur lors de la sauvegarde',
+            ], 500);
+        }
+
+        return $this->respond([
+            'success' => true,
+            'message' => 'Programme sauvegardé',
+        ]);
+    }
 }

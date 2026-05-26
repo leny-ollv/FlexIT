@@ -18,6 +18,7 @@ $routes->group('api',['namespace' => 'App\Controllers\Api'],function($routes){
         $routes->group('workout', ['filter' => 'apitoken'], function($routes){
             $routes->get('all', 'Workout::index');
             $routes->get('(:num)', 'Workout::show/$1');
+            $routes->post('save/(:num)', 'Workout::save/$1');
         });
     });
     $routes->group('muscles', ['filter' => 'apitoken'], function($routes){

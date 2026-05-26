@@ -14,7 +14,13 @@ class Exercice extends ResourceController
      */
     public function index()
     {
-        //
+        try {
+            $em = model('ExerciseModel');
+            $exercises = $em->orderBy('name', 'ASC')->findAll();
+            return $this->respond($exercises);
+        } catch (\Exception $e) {
+            return $this->respond(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
