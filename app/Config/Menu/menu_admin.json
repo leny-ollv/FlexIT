@@ -39,6 +39,11 @@
         "url": "/admin/category",
         "icon": "<i class=\"nav-icon fas fa-layer-group\"></i>"
       },
+      "variations": {
+        "title": "Variations",
+        "url": "/admin/exercisevariation",
+        "icon": "<i class=\"nav-icon fas fa-layer-group\"></i>"
+      },
       "muscle": {
         "title": "Muscles",
         "url": "/admin/muscle",

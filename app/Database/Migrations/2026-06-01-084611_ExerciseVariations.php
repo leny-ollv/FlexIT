@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateExercicesTable extends Migration
+class ExerciseVariations extends Migration
 {
     public function up()
     {
@@ -17,17 +17,8 @@ class CreateExercicesTable extends Migration
             ],
             'name' => ['type' => 'VARCHAR', 'constraint' => 255],
             'description' => ['type' => 'TEXT', 'null' => true],
-            'rest_time' => ['type' => 'INT', 'null' => true],
-            'reps' => ['type' => 'INT', 'null' => true],
-            'nber_series' => ['type' => 'INT', 'null' => true],
-            'time_series' => ['type' => 'INT', 'null' => true],
-            'id_cat' => [
-                'type' => 'BIGINT',
-                'constraint' => 20,
-                'unsigned' => true,
-                'null' => true
-            ],
-            'id_variation' => [
+            'difficulty_level' => ['type' => 'TEXT', 'null' => true],
+            'id_exercise' => [
                 'type' => 'BIGINT',
                 'constraint' => 20,
                 'unsigned' => true,
@@ -39,13 +30,12 @@ class CreateExercicesTable extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('id_cat', 'categories', 'id', 'CASCADE', 'SET NULL');
-        $this->forge->addForeignKey('id_variation', 'exercices_variations', 'id', 'CASCADE', 'SET NULL');
-        $this->forge->createTable('exercices');
+        $this->forge->addForeignKey('id_exercise', 'exercices', 'id', 'CASCADE', 'SET NULL');
+        $this->forge->createTable('exercices_variations');
     }
 
     public function down()
     {
-        $this->forge->dropTable('exercices');
+        $this->forge->dropTable('exercices_variations');
     }
 }

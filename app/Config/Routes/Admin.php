@@ -47,6 +47,14 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => 'au
         $routes->get('search', 'Exercise::search');
     });
 
+    $routes->group('exercisevariation', function ($routes) {
+        $routes->get('/', 'ExerciseVariation::index');
+        $routes->get('new', 'ExerciseVariation::create');
+        $routes->get('(:num)', 'ExerciseVariation::edit/$1');
+        $routes->post('save', 'ExerciseVariation::save');
+        $routes->post('delete', 'ExerciseVariation::delete');
+    });
+
     $routes->group('category', function ($routes) {
         $routes->get('/', 'Category::index');
         $routes->get('new', 'Category::create');
